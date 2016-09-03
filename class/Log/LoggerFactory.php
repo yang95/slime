@@ -29,5 +29,7 @@ class LoggerFactory
             }
             $Logger->setWriter($sKey, $Obj);
         }
+
+        return $Logger;
     }
 }
