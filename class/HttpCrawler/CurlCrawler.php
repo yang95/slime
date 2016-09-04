@@ -14,6 +14,7 @@ class CurlCrawler
 
     protected $mSuccCB   = null;
     protected $mFailedCB = null;
+    protected $mCachedCB = null;
 
     public function __construct($iMaxConcurrency = 1000, $iDefaultTimeout = 30, $iSleepUSWhenWait = 10)
     {
@@ -54,6 +55,12 @@ class CurlCrawler
         return $this;
     }
 
+    public function setCacheCB($mFetch, $mSave)
+    {
+        $this->mCachedCB['fetch'] = $mFetch;
+        $this->mCachedCB['save']  = $mSave;
+    }
+
     public function run()
     {
         $aFailed = [];
@@ -61,6 +68,18 @@ class CurlCrawler
             # init
             if (count($this->aToDoTask) > 0) {
                 foreach ($this->aToDoTask as $iK => $aOne) {
+
+                    # cache fetch
+                    if (!empty($this->mCachedCB['fetch'])) {
+                        $mRS = call_user_func($this->mCachedCB['fetch'], $aOne['request']);
+                        if ($mRS !== false) {
+                            call_user_func($aOne['succ_cb'], $aOne['request'], null, $this, (string)$mRS);
+                            unset($this->aToDoTask[$iK]);
+                            goto NEXT;
+                        }
+                    }
+
+
                     unset($this->aToDoTask[$iK]);
                     /** @var RequestInterface $REQ */
                     $REQ   = $aOne['request'];
@@ -112,8 +131,13 @@ class CurlCrawler
             # cb
             if (count($this->aFinishedTask) > 0) {
                 foreach ($this->aFinishedTask as $iK => $aOne) {
-                    $aOne = array_shift($this->aFinishedTask);
                     $mCB  = $aOne['succ_cb'] === null ? $this->mSuccCB : $aOne['succ_cb'];
+
+                    # cache save
+                    if (!empty($this->mCachedCB['save'])) {
+                        call_user_func($this->mCachedCB['save'], $aOne['request'], $aOne['response']);
+                    }
+
                     call_user_func($mCB, $aOne['request'], $aOne['response'], $this);
                     unset($this->aFinishedTask[$iK]);
                 }
