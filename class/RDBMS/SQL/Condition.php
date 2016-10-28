@@ -127,6 +127,7 @@ class Condition implements ConditionInterface
     public function between($sK, $mV1, $mV2)
     {
         $this->aData[] = [$sK, 'BETWEEN', [$mV1, $mV2]];
+        return $this;
     }
 
     /**
