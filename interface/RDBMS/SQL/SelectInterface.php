@@ -1,6 +1,7 @@
 <?php
 namespace SlimeInterface\RDBMS\SQL;
 
+
 interface SelectInterface extends SQLInterface
 {
     /**

@@ -241,7 +241,7 @@ abstract class SQLAbstract implements SQLInterface
                 "%s JOIN %s ON %s",
                 $aRow[0],
                 $this->parseTable($aRow[1]),
-                (string)$aRow[2]
+                $this->parseCondition($aRow[2])
             );
         }
 

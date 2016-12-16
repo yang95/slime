@@ -23,7 +23,6 @@ class Container implements ContainerInterface, \ArrayAccess
         foreach ($aConf as $sK => $sV) {
             $Obj[$sK] = $sV;
         }
-
         return $Obj;
     }
 

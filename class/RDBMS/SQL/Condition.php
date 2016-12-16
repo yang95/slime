@@ -127,6 +127,7 @@ class Condition implements ConditionInterface
     public function between($sK, $mV1, $mV2)
     {
         $this->aData[] = [$sK, 'BETWEEN', [$mV1, $mV2]];
+        return $this;
     }
 
     /**
@@ -162,6 +163,18 @@ class Condition implements ConditionInterface
     public function like($sK, $mV)
     {
         $this->aData[] = [$sK, 'LIKE', $mV];
+        return $this;
+    }
+
+    /**
+     * @param string $sK
+     * @param mixed  $mV
+     *
+     * @return self
+     */
+    public function notLike($sK, $mV)
+    {
+        $this->aData[] = [$sK, 'NOT LIKE', $mV];
         return $this;
     }
 

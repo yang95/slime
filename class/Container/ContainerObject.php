@@ -42,7 +42,7 @@ class ContainerObject
 
     public function __sleep()
     {
-        $Ref = new \ReflectionObject($this);
+        $Ref   = new \ReflectionObject($this);
         $aProp = $Ref->getDefaultProperties();
         unset($aProp['__Container']);
         $aPropKey = array_keys($aProp);
