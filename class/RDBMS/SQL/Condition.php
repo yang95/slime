@@ -176,17 +176,6 @@ class Condition implements ConditionInterface
         $this->aData[] = [$sK, 'NOT LIKE', $mV];
         return $this;
     }
-    /**
-     * @param string $sK
-     * @param mixed  $mV
-     *
-     * @return self
-     */
-    public function notLike($sK, $mV)
-    {
-        $this->aData[] = [$sK, 'NOT LIKE', $mV];
-        return $this;
-    }
 
     /**
      * @param string $sK
